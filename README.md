@@ -7,6 +7,9 @@ This is my first Godot game. I hope you like it.
 Test in a modern browser at: [https://lloesche.github.io/clockgame/](https://lloesche.github.io/clockgame/)  
 If you are using Safari or an old phone use: [https://lloesche.github.io/clockgame/mobile/](https://lloesche.github.io/clockgame/mobile/)
 
+![Splash Screen](https://raw.githubusercontent.com/osloesche/clockgame/main/clockgame_splash.png)
+
+
 # Attribution
 ## Fonts
 Fonts are licensed under the [Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL).
