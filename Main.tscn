@@ -384,6 +384,7 @@ __meta__ = {
 [node name="Fireworks" type="Particles2D" parent="."]
 position = Vector2( 359.064, 1146.96 )
 scale = Vector2( 0.2, 0.2 )
+emitting = false
 amount = 40
 lifetime = 3.0
 one_shot = true

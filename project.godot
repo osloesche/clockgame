@@ -14,6 +14,8 @@ config/name="clockgame"
 run/main_scene="res://Main.tscn"
 boot_splash/image="res://clockgame_splash.png"
 config/icon="res://ic_launcher.png"
+config/macos_native_icon="res://macos_icon.icns"
+config/windows_native_icon="res://windows_icon.ico"
 
 [audio]
 
