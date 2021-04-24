@@ -10,7 +10,6 @@ onready var degrees_minute: float = 0.0
 onready var is_day: bool = true
 
 func _ready():
-	$AnimationPlayer.get_animation("Clock").loop = true
 	$AnimationPlayer.play("Clock")
 	$APBG_rocks_1.play("Parallax")
 	$APBG_rocks_2.play("Parallax")
