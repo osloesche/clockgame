@@ -7,7 +7,7 @@ onready var hour_fraction: float = 0.0
 onready var minute_fraction: float = 0.0
 onready var degrees_hour: float = 0.0
 onready var degrees_minute: float = 0.0
-onready var is_am: bool = true
+onready var is_day: bool = true
 
 func _ready():
 	$AnimationPlayer.get_animation("Clock").loop = true
@@ -118,13 +118,13 @@ func _on_APClock_animation_finished(anim_name):
 
 func set_ampm():
 	if time.hour >= 6 and time.hour < 18:
-		if !is_am:
+		if !is_day:
 			$APBG.play("Day")
-			is_am = true
+			is_day = true
 	else:
-		if is_am:
+		if is_day:
 			$APBG.play("Night")
-			is_am = false
+			is_day = false
 
 
 func _on_Settings_settings_loaded():
