@@ -35,7 +35,7 @@ Sound effects obtained from [Zapsplat](https://www.zapsplat.com/)
 
 # LICENSES
 ## Source Code
-Copyright 2021 [Lukas Lösche](mailto:lukas@opensourcery.de)
+Copyright 2021 Oliver & Lukas Lösche
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
