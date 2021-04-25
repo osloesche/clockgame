@@ -1,13 +1,16 @@
 extends Node2D
+var time_est = "00:00"
+var game_running: bool = false
+var hour_fraction: float = 0.0
+var minute_fraction: float = 0.0
+var degrees_hour: float = 0.0
+var degrees_minute: float = 0.0
+var is_day: bool = true
+var fireworks_counter: int = 0
+var score: int = 0
 onready var time = OS.get_time()
-onready var time_est = "00:00"
-onready var game_running: bool = false
 onready var rng = RandomNumberGenerator.new()
-onready var hour_fraction: float = 0.0
-onready var minute_fraction: float = 0.0
-onready var degrees_hour: float = 0.0
-onready var degrees_minute: float = 0.0
-onready var is_day: bool = true
+
 
 func _ready():
 	$AnimationPlayer.play("Clock")
@@ -18,11 +21,16 @@ func _ready():
 	rng.randomize()
 	set_ampm()
 
+
 func _input(event):
 	if event.is_action_pressed("ui_hint"):
 		hint()
 	if event.is_action_pressed("ui_set"):
-		$Settings.toggle()
+		if !$Highscore.visible:
+			$Settings.toggle()
+	if event.is_action_pressed("ui_highscore"):
+		if !$Settings.visible:
+			$Highscore.toggle()
 	if event.is_action_pressed("ui_quit"):
 		get_tree().quit()
 	if event.is_action_pressed("ui_mute"):
@@ -36,11 +44,13 @@ func _input(event):
 	if event.is_action_pressed("ui_settime"):
 		new_time($HourSlider.value, $MinuteSlider.value)
 
+
 func calc_degrees():
 	hour_fraction = float(time.hour) + map(float(time.minute), 0.0, 60.0, 0.0, 1.0)
 	minute_fraction = float(time.minute) + map(float(time.second), 0.0, 60.0, 0.0, 1.0)
 	degrees_hour = map(hour_fraction, 0.0, 24.0, 0.0, 720.0)
 	degrees_minute = map(minute_fraction, 0.0, 60.0, 0.0, 360.0)
+
 
 func _physics_process(_delta):
 	if !game_running:
@@ -49,23 +59,33 @@ func _physics_process(_delta):
 	time_est = "%02d:%02d" % [$HourSlider.value, $MinuteSlider.value]
 	$CenterContainer/TimeEst.text = time_est
 
+
 func _process(_delta):
 	if $APClock.is_playing():
 		return
 	$"clock frame/little hand".rotation_degrees = degrees_hour
 	$"clock frame/big hand".rotation_degrees = degrees_minute
 
+
+func set_score():
+	$Score.text = "Score: %d" % [score]
+
+
 func map(x, in_min, in_max, out_min, out_max):
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	$AnimationPlayer.play(anim_name)
 
+
 func _on_HourSlider_value_changed(_value):
 	pass # Replace with function body.
 
+
 func _on_MinuteSlider_value_changed(_value):
 	pass # Replace with function body.
+
 
 func _on_Submit_pressed():
 	if $APSubmit.is_playing() or $APClock.is_playing():
@@ -75,13 +95,41 @@ func _on_Submit_pressed():
 	print("Current time: %d:%d  Guess was: %d:%d  Degrees: %f, %f" % [time.hour, time.minute, $HourSlider.value, $MinuteSlider.value, degrees_hour, degrees_minute])
 
 	if $HourSlider.value == time.hour and $MinuteSlider.value >= min_valid_minute and $MinuteSlider.value <= max_valid_minute:
-		$Fireworks.emitting = true
+		if $Settings.enable_extrainfo:
+			score += 1
+		else:
+			score += 2
+		# fixme: there has to be a better way
+		# The issue the following code solves is this:
+		# When a user presses the Hint/Submit buttons very fast
+		# Godot's CPUParticles2D would still be emitting from
+		# the previous round(s). I could not find a way to
+		# force the current emitter to stop and restart
+		# so instead I'm using five emitters and trigger them
+		# one after another (with 4 I was still able to press
+		# the buttons fast enough to trigger the bug).
+		if fireworks_counter % 4 == 0:
+			$Fireworks/Fireworks0.emitting = true
+		elif fireworks_counter % 4 == 1:
+			$Fireworks/Fireworks1.emitting = true
+		elif fireworks_counter % 4 == 2:
+			$Fireworks/Fireworks2.emitting = true
+		elif fireworks_counter % 4 == 3:
+			$Fireworks/Fireworks3.emitting = true
+		elif fireworks_counter % 4 == 4:
+			$Fireworks/Fireworks4.emitting = true
+		fireworks_counter += 1
+
 		$APSubmit.play("Correct")
 		$AudioStreamPlayerCorrect.play()
 		new_time()
 	else:
+		$Highscore.submit_score(score)
+		score = 0
 		$APSubmit.play("Wrong")
 		$AudioStreamPlayerWrong.play()
+	set_score()
+
 
 func new_time(hour: int = -1, minute: int = -1):
 	game_running = true
@@ -111,9 +159,11 @@ func new_time(hour: int = -1, minute: int = -1):
 	$APClock.play("next_round")
 	set_ampm()
 
+
 func _on_APClock_animation_finished(anim_name):
 	if anim_name == "next_round":
 		$APClock.remove_animation(anim_name)
+
 
 func set_ampm():
 	if time.hour >= 6 and time.hour < 18:
@@ -130,17 +180,27 @@ func _on_Settings_settings_loaded():
 	$AudioStreamPlayerBG.playing = $Settings.enable_music
 	check_extrainfo()
 
+
 func check_extrainfo():
 	if $Settings.enable_extrainfo:
+		score -= 1
+		if score < 0:
+			score = 0
+		set_score()
 		$inner_rune.visible = false
 		$inner_seconds.visible = true
 	else:
 		$inner_rune.visible = true
 		$inner_seconds.visible = false
 
+
 func hint():
 	if $APSubmit.is_playing() or $APClock.is_playing():
 		return
+	score -= 3
+	if score < 0:
+		score = 0
+	set_score()
 	var anim = Animation.new()
 	$APClock.add_animation("Hint", anim)
 	anim.add_track(0)

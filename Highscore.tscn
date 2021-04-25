@@ -1,0 +1,126 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://clockgame_menu.png" type="Texture" id=1]
+[ext_resource path="res://clockgame_menu_banner.png" type="Texture" id=2]
+[ext_resource path="res://ArchitectsDaughter-Regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Highscore.gd" type="Script" id=6]
+[ext_resource path="res://Mulish-Regular.ttf" type="DynamicFontData" id=8]
+
+[sub_resource type="Animation" id=5]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("CenterContainer:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 2, 2, 2, 2 ),
+"update": 0,
+"values": [ Vector2( 0, -1000 ), Vector2( 0, 50 ), Vector2( 0, -50 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("CenterContainer:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 5.27803, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -1000 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="DynamicFont" id=8]
+size = 45
+outline_size = 3
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 55
+outline_size = 8
+outline_color = Color( 0.807843, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 3 )
+
+[node name="Highscore" type="Node2D"]
+script = ExtResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Load = SubResource( 5 )
+anims/Unload = SubResource( 6 )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="clockgame_menu" type="Sprite" parent="CenterContainer"]
+position = Vector2( 334.801, 529.63 )
+texture = ExtResource( 1 )
+
+[node name="label_score_list" type="Label" parent="CenterContainer/clockgame_menu"]
+margin_left = -224.98
+margin_top = -292.233
+margin_right = -148.98
+margin_bottom = 277.767
+custom_fonts/font = SubResource( 8 )
+custom_colors/font_color = Color( 0.992157, 0.964706, 0.92549, 1 )
+custom_colors/font_outline_modulate = Color( 0.894118, 0.698039, 0.364706, 1 )
+text = "1. 0
+2. 0
+3. 0
+4. 0
+5. 0
+6. 0
+7. 0
+8. 0
+9. 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="clockgame_menu_banner" type="Sprite" parent="CenterContainer"]
+position = Vector2( 326.933, 134.406 )
+texture = ExtResource( 2 )
+
+[node name="label_highscore" type="Label" parent="CenterContainer/clockgame_menu_banner"]
+margin_left = -158.468
+margin_top = -68.0
+margin_right = 136.532
+margin_bottom = 10.0
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "HIGHSCORE"
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Netherplace_Looping.ogg" type="AudioStream" id=2]
@@ -28,6 +28,9 @@
 [ext_resource path="res://clouds_1.png" type="Texture" id=26]
 [ext_resource path="res://sky.png" type="Texture" id=27]
 [ext_resource path="res://clouds_2.png" type="Texture" id=28]
+[ext_resource path="res://clockgame_highscore_pressed.png" type="Texture" id=29]
+[ext_resource path="res://clockgame_highscore.png" type="Texture" id=30]
+[ext_resource path="res://Highscore.tscn" type="PackedScene" id=31]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Parallax"
@@ -209,6 +212,11 @@ scale = 2.0
 scale_random = 1.0
 scale_curve = SubResource( 12 )
 
+[sub_resource type="DynamicFont" id=14]
+size = 60
+outline_size = 3
+font_data = ExtResource( 14 )
+
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -293,14 +301,14 @@ __meta__ = {
 }
 
 [node name="SettingsButton" type="TouchScreenButton" parent="."]
-position = Vector2( 610.293, 171.649 )
+position = Vector2( 595, 30 )
 scale = Vector2( 0.5, 0.5 )
 normal = ExtResource( 6 )
 pressed = ExtResource( 10 )
 action = "ui_set"
 
 [node name="ExitButton" type="TouchScreenButton" parent="."]
-position = Vector2( 27.3936, 175.638 )
+position = Vector2( 35, 30 )
 scale = Vector2( 0.5, 0.5 )
 normal = ExtResource( 4 )
 pressed = ExtResource( 5 )
@@ -382,10 +390,122 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Fireworks" type="Particles2D" parent="."]
+[node name="Fireworks" type="Node2D" parent="."]
 position = Vector2( 359.064, 1146.96 )
 scale = Vector2( 0.2, 0.2 )
+
+[node name="Fireworks0" type="CPUParticles2D" parent="Fireworks"]
 emitting = false
+amount = 40
+lifetime = 3.0
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.7
+randomness = 0.56
+texture = ExtResource( 24 )
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, 500 )
+initial_velocity = 1000.0
+initial_velocity_random = 0.25
+angular_velocity = 115.81
+angular_velocity_random = 1.0
+angle = 360.0
+angle_random = 1.0
+scale_amount = 2.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 11 )
+
+[node name="Fireworks1" type="CPUParticles2D" parent="Fireworks"]
+emitting = false
+amount = 40
+lifetime = 3.0
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.7
+randomness = 0.56
+texture = ExtResource( 24 )
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, 500 )
+initial_velocity = 1000.0
+initial_velocity_random = 0.25
+angular_velocity = 115.81
+angular_velocity_random = 1.0
+angle = 360.0
+angle_random = 1.0
+scale_amount = 2.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 11 )
+
+[node name="Fireworks2" type="CPUParticles2D" parent="Fireworks"]
+emitting = false
+amount = 40
+lifetime = 3.0
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.7
+randomness = 0.56
+texture = ExtResource( 24 )
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, 500 )
+initial_velocity = 1000.0
+initial_velocity_random = 0.25
+angular_velocity = 115.81
+angular_velocity_random = 1.0
+angle = 360.0
+angle_random = 1.0
+scale_amount = 2.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 11 )
+
+[node name="Fireworks3" type="CPUParticles2D" parent="Fireworks"]
+emitting = false
+amount = 40
+lifetime = 3.0
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.7
+randomness = 0.56
+texture = ExtResource( 24 )
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, 500 )
+initial_velocity = 1000.0
+initial_velocity_random = 0.25
+angular_velocity = 115.81
+angular_velocity_random = 1.0
+angle = 360.0
+angle_random = 1.0
+scale_amount = 2.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 11 )
+
+[node name="Fireworks4" type="CPUParticles2D" parent="Fireworks"]
+emitting = false
+amount = 40
+lifetime = 3.0
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.7
+randomness = 0.56
+texture = ExtResource( 24 )
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, 500 )
+initial_velocity = 1000.0
+initial_velocity_random = 0.25
+angular_velocity = 115.81
+angular_velocity_random = 1.0
+angle = 360.0
+angle_random = 1.0
+scale_amount = 2.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 11 )
+
+[node name="GPUFireworks" type="Particles2D" parent="Fireworks"]
+visible = false
 amount = 40
 lifetime = 3.0
 one_shot = true
@@ -402,12 +522,36 @@ scale = Vector2( 0.647817, 0.808759 )
 normal = ExtResource( 18 )
 pressed = ExtResource( 16 )
 
+[node name="Score" type="Label" parent="."]
+margin_left = 40.0
+margin_top = 160.0
+margin_right = 262.0
+margin_bottom = 236.0
+custom_fonts/font = SubResource( 14 )
+custom_colors/font_color = Color( 1, 0.866667, 0.643137, 1 )
+custom_colors/font_outline_modulate = Color( 0.894118, 0.698039, 0.364706, 1 )
+text = "Score: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Settings" parent="." instance=ExtResource( 21 )]
 visible = false
 position = Vector2( 28.3548, 243.821 )
 
+[node name="Highscore" parent="." instance=ExtResource( 31 )]
+visible = false
+position = Vector2( 28.2223, 180.029 )
+
+[node name="HighscoreButton" type="TouchScreenButton" parent="."]
+position = Vector2( 393.287, 1285 )
+scale = Vector2( 0.5, 0.5 )
+normal = ExtResource( 30 )
+pressed = ExtResource( 29 )
+action = "ui_highscore"
+
 [node name="HintButton" type="TouchScreenButton" parent="."]
-position = Vector2( 310.671, 1292.55 )
+position = Vector2( 241.697, 1285 )
 scale = Vector2( 0.5, 0.5 )
 normal = ExtResource( 23 )
 pressed = ExtResource( 22 )

@@ -4,12 +4,7 @@ signal settings_loaded
 var enable_music setget enable_music_set
 var enable_extrainfo setget enable_extrainfo_set
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	enable_music = true
 	enable_extrainfo = false
@@ -19,9 +14,6 @@ func _input(event):
 	if event.is_action_pressed("ui_cancel") and visible:
 		fade_out()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 
 func enable_music_set(value):
 	print("Setting Music %s" % [value])
@@ -54,12 +46,15 @@ func toggle():
 	else:
 		fade_in()
 
+
 func fade_in():
 	$AnimationPlayer.play("Load")
-	
+
+
 func fade_out():
 	save_settings()
 	$AnimationPlayer.play("Unload")
+
 
 func save_settings():
 	var f = File.new()
@@ -67,6 +62,7 @@ func save_settings():
 	f.store_var(enable_music)
 	f.store_var(enable_extrainfo)
 	f.close()
+
 
 func load_settings():
 	var f = File.new()
